@@ -37,9 +37,13 @@ ENV \
 # Add configuration scripts
 COPY bin /opt/guacamole/bin/
 
+# Copy modified .war
+RUN mkdir -p /usr/local/tomcat/webapps
+COPY guacamole-${GUAC_VERSION}-remoteuser.war /usr/local/tomcat/webapps/guacamole.war
+
 # Download and install latest guacamole-client and authentication
 RUN \
-    /opt/guacamole/bin/download-guacamole.sh "$GUAC_VERSION" /usr/local/tomcat/webapps && \
+    #/opt/guacamole/bin/download-guacamole.sh "$GUAC_VERSION" /usr/local/tomcat/webapps && \
     /opt/guacamole/bin/download-jdbc-auth.sh "$GUAC_JDBC_VERSION" /opt/guacamole       && \
     /opt/guacamole/bin/download-ldap-auth.sh "$GUAC_LDAP_VERSION" /opt/guacamole       && \
     /opt/guacamole/bin/download-extension.sh "guacamole-auth-noauth" "$GUAC_VERSION" /opt/guacamole/extensions
